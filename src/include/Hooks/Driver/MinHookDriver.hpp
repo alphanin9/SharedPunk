@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
 
-namespace hook
+namespace shared::hook
 {
 struct MinHookDriver
 {
@@ -14,4 +14,4 @@ struct MinHookDriver
     bool Attach(uintptr_t aAddr, void* aDetour, void** aOriginalFn) const noexcept;
     bool Detach(uintptr_t aAddr) const noexcept;
 };
-}
+} // namespace shared::hook

@@ -5,7 +5,7 @@
 
 #include <Util/Core.hpp>
 
-namespace hook
+namespace shared::hook
 {
 
 template<typename TTarget, typename TCallback, HookFlow TFlow = HookFlow::Original, HookRun TRun = HookRun::Default>

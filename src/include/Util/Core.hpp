@@ -4,7 +4,7 @@
 #include <cstdint>
 
 // Borrowed from https://github.com/psiberx/cp2077-codeware/blob/main/lib/Core/Raw.hpp
-namespace util
+namespace shared::util
 {
 class RawBase
 {

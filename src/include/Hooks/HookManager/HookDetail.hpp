@@ -3,7 +3,7 @@
 #include <Raw/Assert/AssertionFailed.hpp>
 #include <Hooks/Driver/MinHookDriver.hpp>
 
-namespace hook
+namespace shared::hook
 {
 enum class HookFlow
 {
@@ -63,7 +63,7 @@ struct HookResult
 };
 }
 
-namespace hook::Detail
+namespace shared::hook::Detail
 {
 template<typename R, typename... Args>
 using OriginalFunc = R (*)(Args...);
