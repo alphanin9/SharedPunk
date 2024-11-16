@@ -63,6 +63,11 @@ enum class ESessionUnkEnum : std::uint8_t
 
 struct Data
 {
+    static constexpr auto AddArgumentInternal = util::RawFunc<detail::Hashes::SessionData_AddArgumentToList,
+                                                       void* (*)(Red::DynArray<Red::SharedPtr<Red::ISerializable>>&,
+                                                                 Red::CName, Red::CBaseRTTIType*, void*)>();
+    static constexpr auto Dtor = util::RawFunc<detail::Hashes::SessionData_dtor, void* (*)(void*)>();
+
     ESessionUnkEnum m_unk{}; // 00
 
     Red::CString m_sessionName{};                  // 08, set to "Session" in most of our usecases
@@ -80,10 +85,6 @@ struct Data
         AddArgumentInternal(m_arguments, aArg, Red::GetType<ObjectType>(), aObject);
     }
 };
-constexpr auto AddArgumentInternal = util::RawFunc<detail::Hashes::SessionData_AddArgumentToList,
-                                                   void* (*)(Red::DynArray<Red::SharedPtr<Red::ISerializable>>&,
-                                                             Red::CName, Red::CBaseRTTIType*, void*)>();
-constexpr auto Dtor = util::RawFunc<detail::Hashes::SessionData_dtor, void* (*)(void*)>();
 }; // namespace SessionData
 
 namespace SystemRequestsHandler
