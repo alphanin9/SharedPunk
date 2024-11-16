@@ -17,3 +17,15 @@ target("your-cool-mod")
     ...
     add_deps("cp2077-shared-data", ...)
 ```
+
+### How to use
+
+**Note: the \<Impl/> directory contains various implementation data 
+(hooking detail, address hashes for defined reversed functions, etc), 
+it should not be necessary to include anything from there directly**
+
+```cpp
+#include <Shared/Util/Core.hpp>
+
+constexpr auto fn = util::RawFunc<...>();
+```
