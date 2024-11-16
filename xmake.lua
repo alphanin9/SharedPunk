@@ -28,7 +28,6 @@ target("cp2077-shared-data")
     end
     set_optimize("fastest")
     add_files("src/code/**.cpp")
-    add_includedirs("src/include/")
     add_includedirs("src/include/", { public = true })
     add_headerfiles("src/include/**.hpp")
     add_syslinks("Version", "User32")
