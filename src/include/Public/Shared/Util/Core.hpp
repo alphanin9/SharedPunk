@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include <RED4ext/RED4ext.hpp>
 #include <cstdint>
 
