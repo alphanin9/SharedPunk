@@ -3,6 +3,7 @@
 using namespace Red;
 using namespace shared::raw::Filesystem;
 
+#pragma region Unbuffered
 RedFileStream::RedFileStream(BaseStream* aStream) noexcept
     : m_stream(aStream)
 {
@@ -12,7 +13,7 @@ RedFileStream::~RedFileStream() noexcept
 {
     if (m_stream)
     {
-        DestructFileStream(this);
+        Destruct(this);
     }
 }
 
@@ -41,6 +42,48 @@ RedFileStream::operator bool() const noexcept
 {
     return m_stream != nullptr;
 }
+#pragma endregion
+
+#pragma region Buffered
+BufferedRedFileStream::BufferedRedFileStream(BaseStream* aStream) noexcept
+    : m_stream(aStream)
+{
+}
+
+BufferedRedFileStream::~BufferedRedFileStream() noexcept
+{
+    if (m_stream)
+    {
+        Destruct(this);
+    }
+}
+
+BaseStream* BufferedRedFileStream::operator->() noexcept
+{
+    return m_stream;
+}
+
+BaseStream* const BufferedRedFileStream::operator->() const noexcept
+{
+    return m_stream;
+}
+
+// These 2 actually need Red namespace I think
+BufferedRedFileStream::operator Red::BaseStream*() noexcept
+{
+    return m_stream;
+}
+
+BufferedRedFileStream::operator Red::BaseStream* const() const noexcept
+{
+    return m_stream;
+}
+
+BufferedRedFileStream::operator bool() const noexcept
+{
+    return m_stream != nullptr;
+}
+#pragma endregion
 
 RedFileManager* RedFileManager::GetInstance() noexcept
 {
@@ -59,7 +102,15 @@ DynArray<CString> RedFileManager::FindFilesByName(const CString& aRootPath, cons
 RedFileStream RedFileManager::OpenFileStream(const CString& aPath) noexcept
 {
     RedFileStream ret{};
-    OpenFileStreamInternal(this, ret, aPath, 0);
+    OpenFileStreamInternal(this, &ret, aPath, 0);
+
+    return ret;
+}
+
+BufferedRedFileStream RedFileManager::OpenBufferedFileStream(const CString& aPath) noexcept
+{
+    BufferedRedFileStream ret{};
+    OpenFileStreamInternal(this, &ret, aPath, 1);
 
     return ret;
 }

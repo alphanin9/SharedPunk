@@ -7,6 +7,7 @@ constexpr auto Assert_RaiseAssert = 4285205681u;
 
 #pragma region FileSystem
 constexpr auto FileStream_dtor = 1924865980u;
+constexpr auto FileStream_Buffered_dtor = 2577866805u;
 constexpr auto FileSystem_GetSaveFolder = 4293661415u;
 
 constexpr auto RedFileManager_Instance = 3788966949u;
@@ -50,6 +51,9 @@ constexpr auto SafeAreaManager_IsPointInSafeArea = 2322404505u;
 #pragma endregion
 
 #pragma region Save
+constexpr auto SaveLoadStreamPtr_AllocateAndCtor = 858271454u;
+constexpr auto SaveLoadStreamPtr_Dtor = 1568285277u;
+
 constexpr auto SaveNodeAccessor_ctor = 3391557872u;
 constexpr auto SaveNodeAccessor_dtor = 2159741197u;
 constexpr auto SaveNodeAccessor_IsGoodNode = 2352744844u;

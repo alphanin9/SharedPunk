@@ -12,9 +12,11 @@ namespace shared::raw
 {
 namespace Filesystem
 {
+// Unfortunately IDK if inheritance will work here
+// Looks to me like something like unique_ptr above it
 struct RedFileStream
 {
-    static constexpr auto DestructFileStream =
+    static constexpr auto Destruct =
         util::RawFunc<detail::Hashes::FileStream_dtor, void (*)(RedFileStream*)>();
 
     Red::BaseStream* m_stream;
@@ -34,6 +36,28 @@ struct RedFileStream
     operator bool() const noexcept;
 };
 
+struct BufferedRedFileStream
+{
+    static constexpr auto Destruct =
+        util::RawFunc<detail::Hashes::FileStream_Buffered_dtor, void (*)(BufferedRedFileStream*)>();
+
+    Red::BaseStream* m_stream;
+
+    BufferedRedFileStream(Red::BaseStream* aStream) noexcept;
+    BufferedRedFileStream() = default;
+    BufferedRedFileStream(const BufferedRedFileStream&) = delete;
+    BufferedRedFileStream& operator=(const BufferedRedFileStream&) = delete;
+    BufferedRedFileStream(BufferedRedFileStream&&) = default;
+    ~BufferedRedFileStream() noexcept;
+
+    Red::BaseStream* operator->() noexcept;
+    Red::BaseStream* const operator->() const noexcept;
+
+    operator Red::BaseStream*() noexcept;
+    operator Red::BaseStream* const() const noexcept;
+    operator bool() const noexcept;
+};
+
 struct RedFileManager
 {
     static constexpr auto Instance = util::RawPtr<detail::Hashes::RedFileManager_Instance, RedFileManager*>();
@@ -43,9 +67,12 @@ struct RedFileManager
                       void* (*)(RedFileManager*, const Red::CString& aRootPath, const Red::StringView& aFileName,
                                 Red::DynArray<Red::CString>&, bool aRecurse)>();
 
+    // Flags:
+    // 0x1: buffered reader
+    // 0x40: unk, probably also requires another dtor
     static constexpr auto OpenFileStreamInternal =
         util::RawFunc<detail::Hashes::RedFileManager_OpenFileStream,
-                      void* (*)(RedFileManager*, RedFileStream&, const Red::CString&, char)>();
+                      void* (*)(RedFileManager*, void*, const Red::CString&, char aFlags)>();
 
     static RedFileManager* GetInstance() noexcept;
 
@@ -53,6 +80,7 @@ struct RedFileManager
                                                 const Red::StringView& aFileName) noexcept;
 
     RedFileStream OpenFileStream(const Red::CString& aPath) noexcept;
+    BufferedRedFileStream OpenBufferedFileStream(const Red::CString& aPath) noexcept;
 };
 
 namespace Path

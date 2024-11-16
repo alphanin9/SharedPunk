@@ -6,6 +6,10 @@
 #include <RED4ext/RED4ext.hpp>
 #include <RedLib.hpp>
 
+#include <RED4ext/Scripting/Natives/Generated/save/Metadata.hpp>
+
+#include <Shared/Raw/FileSystem/FileSystem.hpp>
+
 namespace shared::raw
 {
 namespace Save
@@ -52,10 +56,93 @@ RED4EXT_ASSERT_OFFSET(NodeAccessor, unk09, 0x9);
 
 namespace Stream
 {
-constexpr auto GetSaveVersion = util::RawVFunc<0x48, std::uint32_t (*)(Red::BaseStream*)>();
-constexpr auto GetGameVersion = util::RawVFunc<0x50, std::uint32_t (*)(Red::BaseStream*)>();
-constexpr auto GetSaveName = util::RawVFunc<0x58, void* (*)(Red::BaseStream*, Red::CString&)>();
-constexpr auto Unk90 = util::RawVFunc<0x90, bool (*)(Red::BaseStream*)>();
+struct LoadStream
+{
+    static constexpr auto AllocAndConstruct =
+        util::RawFunc<detail::Hashes::SaveLoadStreamPtr_AllocateAndCtor,
+                      void (*)(LoadStream&, Red::BaseStream*, Red::save::Metadata&)>();
+    static constexpr auto Destruct = util::RawFunc<detail::Hashes::SaveLoadStreamPtr_Dtor, void (*)(LoadStream*)>();
+
+    static constexpr auto GetSaveVersionFunc = util::RawVFunc<0x48, std::uint32_t (*)(Red::BaseStream*)>();
+    static constexpr auto GetGameVersionFunc = util::RawVFunc<0x50, std::uint32_t (*)(Red::BaseStream*)>();
+    static constexpr auto GetSaveNameFunc = util::RawVFunc<0x58, void* (*)(Red::BaseStream*, Red::CString&)>();
+    static constexpr auto InitializeFunc = util::RawVFunc<0x68, bool (*)(Red::BaseStream*)>();
+    static constexpr auto Unk90Func = util::RawVFunc<0x90, bool (*)(Red::BaseStream*)>(); // Maybe IsOK or something?
+
+    ~LoadStream() noexcept
+    {
+        Destruct(this);
+    }
+
+    static LoadStream Create(Red::BaseStream* aStream, Red::save::Metadata& aMetadata)
+    {
+        LoadStream ret{};
+
+        AllocAndConstruct(ret, aStream, aMetadata);
+
+        return ret;
+    }
+
+    LoadStream() = default;
+    LoadStream(const LoadStream&) = delete;
+    LoadStream& operator=(const LoadStream&) = delete;
+    LoadStream(LoadStream&&) = default;
+
+    Red::BaseStream* operator->() noexcept
+    {
+        return m_stream;
+    }
+
+    Red::BaseStream* const operator->() const noexcept
+    {
+        return m_stream;
+    }
+
+    operator Red::BaseStream*() noexcept
+    {
+        return m_stream;
+    }
+
+    operator Red::BaseStream* const() const noexcept
+    {
+        return m_stream;
+    }
+
+    operator bool() const noexcept
+    {
+        return m_stream != nullptr;
+    }
+
+    std::uint32_t GetSaveVersion()
+    {
+        return GetSaveVersionFunc(m_stream);
+    }
+
+    std::uint32_t GetGameVersion()
+    {
+        return GetGameVersionFunc(m_stream);
+    }
+
+    Red::CString GetSaveName()
+    {
+        Red::CString ret{};
+        GetSaveNameFunc(m_stream, ret);
+
+        return ret;
+    }
+
+    bool Initialize()
+    {
+        return InitializeFunc(m_stream);
+    }
+
+    bool IsGood()
+    {
+        return Unk90Func(m_stream);
+    }
+
+    Red::BaseStream* m_stream{};
+};
 } // namespace Stream
 } // namespace Save
 } // namespace shared::raw
