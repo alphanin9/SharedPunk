@@ -7,6 +7,7 @@
 
 namespace shared::raw::Telemetry
 {
-constexpr auto LoadFactMap =
-    util::RawFunc<detail::Hashes::Telemetry_LoadUsedFactsForImportantFactsList, void* (*)(void*)>();
+using LoadFactMap = util::RawFunc<detail::Hashes::Telemetry_LoadUsedFactsForImportantFactsList, void* (*)(void*)>;
+
+constexpr auto LoadFactMapFn = LoadFactMap();
 } // namespace shared::raw::Telemetry
