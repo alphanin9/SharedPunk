@@ -93,5 +93,7 @@ constexpr auto StartSession = util::RawFunc<detail::Hashes::InkSystemRequestsHan
                                             void* (*)(Red::ink::ISystemRequestsHandler*, SessionData::Data*)>();
 constexpr auto ExitToMenu = util::RawFunc<detail::Hashes::InkSystemRequestsHandler_ExitToMainMenu,
                                           void* (*)(Red::ink::ISystemRequestsHandler*)>();
+
+using StartNewGame = util::RawFunc<detail::Hashes::InkSystemRequestsHandler_StartNewGame, void(*)(Red::ink::ISystemRequestsHandler*, Red::Handle<Red::IScriptable>&)>;
 }; // namespace SystemRequestsHandler
 }; // namespace shared::raw::Ink

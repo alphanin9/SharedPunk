@@ -12,4 +12,6 @@ namespace shared::raw::GameDefinition
 {
 constexpr auto ToWorldID = util::RawFunc<detail::Hashes::GameDefinition_ToWorldID,
                                          Red::world::WorldID* (*)(Red::gsm::GameDefinition*, Red::world::WorldID*)>();
+
+using SelectMainGameDefinition = util::RawFunc<detail::Hashes::GameDefinition_SelectMainGameDefinition, Red::ResourcePath*(*)(Red::ResourcePath*, char)>;
 }; // namespace shared::raw::GameDefinition

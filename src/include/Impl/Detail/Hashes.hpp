@@ -18,11 +18,13 @@ constexpr auto FileSystem_MergeDirToPath = 836113218u; // Does a few more checks
 #pragma endregion
 
 #pragma region GameDefinition
+constexpr auto GameDefinition_SelectMainGameDefinition = 2680298706u;
 constexpr auto GameDefinition_ToWorldID = 1002050525u;
 #pragma endregion
 
 #pragma region Ink
 constexpr auto InkSystem_Instance = 2635337807u;
+constexpr auto InkSystemRequestsHandler_StartNewGame = 3897433288u;
 constexpr auto InkSystemRequestsHandler_StartSession = 1357913210u;
 constexpr auto InkSystemRequestsHandler_ExitToMainMenu = 3105624475u;
 

@@ -5,9 +5,10 @@
 #include <Impl/Detail/Hashes.hpp>
 #include <Shared/Util/Core.hpp>
 
+#include <RED4ext/HashMap.hpp>
+
 namespace shared::raw::Telemetry
 {
-using LoadFactMap = util::RawFunc<detail::Hashes::Telemetry_LoadUsedFactsForImportantFactsList, void* (*)(void*)>;
+constexpr auto LoadFactMap = util::RawFunc<detail::Hashes::Telemetry_LoadUsedFactsForImportantFactsList, void* (*)(Red::HashMap<std::uint32_t, Red::CString>&)>();
 
-constexpr auto LoadFactMapFn = LoadFactMap();
 } // namespace shared::raw::Telemetry
