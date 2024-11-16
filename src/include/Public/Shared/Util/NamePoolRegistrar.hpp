@@ -2,7 +2,7 @@
 #include <RED4ext/RED4ext.hpp>
 #include <RedLib.hpp>
 
-namespace shared::raw
+namespace shared::util
 {
 
 template<std::size_t N>
@@ -33,4 +33,4 @@ struct NamePoolRegistrar
         return s_hash;
     }
 };
-} // namespace shared::raw
+} // namespace shared::util
