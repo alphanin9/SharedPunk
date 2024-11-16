@@ -21,11 +21,17 @@ target("redlib")
 
 target("cp2077-shared-data")
     set_kind("static")
-    set_warnings("more")
+    if is_mode("ci") then
+        set_warnings("all", "error")
+    else
+        set_warnings("more")
+    end
+    set_optimize("fastest")
     add_files("src/code/**.cpp")
     add_includedirs("src/include/", {public = true})
     add_headerfiles("src/include/**.hpp", {prefixdir = "shared"})
-    add_defines("NOMINMAX")
+    add_syslinks("Version", "User32")
+    add_defines("WINVER=0x0601", "WIN32_LEAN_AND_MEAN", "NOMINMAX")
     add_deps("red4ext.sdk", "redlib")
     add_packages("minhook")
 

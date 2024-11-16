@@ -1,0 +1,31 @@
+name: Build artifact
+
+on:
+  pull_request:
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: 'recursive'
+    
+    - name: Setup XMake
+      uses: xmake-io/github-action-setup-xmake@v1
+      with:
+        xmake-version: latest
+
+    - name: Update XMake repo
+      run: xmake.exe repo --update
+
+    - name: Configure XMake for CI and install dependencies
+      run: xmake.exe config -m ci --yes
+
+    - name: Build with XMake
+      run: xmake.exe build
