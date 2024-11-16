@@ -29,6 +29,8 @@ target("cp2077-shared-data")
     set_optimize("fastest")
     add_files("src/code/**.cpp")
     add_includedirs("src/include/", { public = true })
+    add_includedirs("src/include/Public", { public = true })
+
     add_headerfiles("src/include/**.hpp")
     add_syslinks("Version", "User32")
     add_defines("WINVER=0x0601", "WIN32_LEAN_AND_MEAN", "NOMINMAX")
