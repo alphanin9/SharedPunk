@@ -29,10 +29,7 @@ jobs:
             BEFORE: ${{ github.event.pull_request.base.sha || github.event.before }}
             AFTER: ${{ github.sha }}
         run: |
-          git `
-            -c core.autocrlf=false `
-            -c core.eol=lf `
-            -c color.ui=always `
-            clang-format `
-              --style file `
-              --diff $env:BEFORE $env:AFTER `
+            git -c core.autocrlf=false
+            git -c core.eol=lf
+            git -c color.ui=always
+            clang-format --style file --diff $env:BEFORE $env:AFTER
