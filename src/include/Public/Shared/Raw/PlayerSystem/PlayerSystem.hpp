@@ -5,8 +5,8 @@
 #include <RED4ext/Scripting/Natives/Generated/cp/PlayerSystem.hpp>
 #include <RED4ext/Scripting/Natives/Generated/game/Object.hpp>
 
-#include <Detail/Hashes.hpp>
-#include <Util/Core.hpp>
+#include <Impl/Detail/Hashes.hpp>
+#include <Shared/Util/Core.hpp>
 
 namespace shared::raw::PlayerSystem
 {

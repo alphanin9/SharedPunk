@@ -5,8 +5,8 @@
 #include <RED4ext/Scripting/Natives/Generated/AI/SafeAreaManager.hpp>
 #include <RED4ext/Scripting/Natives/Vector4.hpp>
 
-#include <Detail/Hashes.hpp>
-#include <Util/Core.hpp>
+#include <Impl/Detail/Hashes.hpp>
+#include <Shared/Util/Core.hpp>
 
 namespace shared::raw::SafeAreaManager
 {

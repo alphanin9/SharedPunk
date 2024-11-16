@@ -6,8 +6,8 @@
 #include <RED4ext/Scripting/Natives/Generated/quest/PhaseInstance.hpp>
 #include <RED4ext/Scripting/Natives/Generated/quest/QuestsSystem.hpp>
 
-#include <Detail/Hashes.hpp>
-#include <Util/Core.hpp>
+#include <Impl/Detail/Hashes.hpp>
+#include <Shared/Util/Core.hpp>
 
 // https://github.com/psiberx/cp2077-archive-xl/blob/main/src/Red/QuestsSystem.hpp
 namespace shared::raw

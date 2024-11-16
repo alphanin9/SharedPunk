@@ -2,8 +2,8 @@
 #include <RED4ext/RED4ext.hpp>
 #include <RedLib.hpp>
 
-#include <Detail/Hashes.hpp>
-#include <Util/Core.hpp>
+#include <Impl/Detail/Hashes.hpp>
+#include <Shared/Util/Core.hpp>
 
 #include <RED4ext/Scripting/Natives/Generated/game/ScriptableSystem.hpp>
 #include <RED4ext/Scripting/Natives/Generated/game/ScriptableSystemRequest.hpp>

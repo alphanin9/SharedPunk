@@ -1,5 +1,5 @@
-#include <Raw/Ink/InkSystem.hpp>
-#include <Raw/Quest/NodeFuncs.hpp>
+#include <Shared/Raw/Ink/InkSystem.hpp>
+#include <Shared/Raw/Quest/NodeFuncs.hpp>
 
 using namespace Red;
 using namespace shared::raw;

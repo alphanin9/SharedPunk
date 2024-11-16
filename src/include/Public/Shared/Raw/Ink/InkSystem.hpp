@@ -1,6 +1,6 @@
 #pragma once
-#include <Detail/Hashes.hpp>
-#include <Util/Core.hpp>
+#include <Impl/Detail/Hashes.hpp>
+#include <Shared/Util/Core.hpp>
 
 #include <RED4ext/RED4ext.hpp>
 #include <RedLib.hpp>
@@ -81,8 +81,8 @@ struct Data
     }
 };
 constexpr auto AddArgumentInternal = util::RawFunc<detail::Hashes::SessionData_AddArgumentToList,
-                                           void* (*)(Red::DynArray<Red::SharedPtr<Red::ISerializable>>&, Red::CName,
-                                                     Red::CBaseRTTIType*, void*)>();
+                                                   void* (*)(Red::DynArray<Red::SharedPtr<Red::ISerializable>>&,
+                                                             Red::CName, Red::CBaseRTTIType*, void*)>();
 constexpr auto Dtor = util::RawFunc<detail::Hashes::SessionData_dtor, void* (*)(void*)>();
 }; // namespace SessionData
 

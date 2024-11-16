@@ -1,6 +1,6 @@
 #pragma once
-#include <Detail/Hashes.hpp>
-#include <Util/Core.hpp>
+#include <Impl/Detail/Hashes.hpp>
+#include <Shared/Util/Core.hpp>
 
 #include <format>
 #include <source_location>

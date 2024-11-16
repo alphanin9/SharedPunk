@@ -1,5 +1,5 @@
 #include <MinHook.h>
-#include <Hooks/Driver/MinHookDriver.hpp>
+#include <Impl/Hooks/Driver/MinHookDriver.hpp>
 
 shared::hook::MinHookDriver::MinHookDriver()
 {

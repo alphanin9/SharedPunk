@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Raw/Assert/AssertionFailed.hpp>
-#include <Hooks/Driver/MinHookDriver.hpp>
+#include <Shared/Raw/Assert/AssertionFailed.hpp>
+#include <Impl/Hooks/Driver/MinHookDriver.hpp>
 
 namespace shared::hook
 {
