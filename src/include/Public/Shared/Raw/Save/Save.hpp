@@ -30,23 +30,9 @@ struct NodeAccessor
         util::RawFunc<detail::Hashes::SaveNodeAccessor_IsGoodNode, bool (*)(NodeAccessor* aThis)>();
 
     // Notes: Node name should likely be added to name pool
-    NodeAccessor(Red::BaseStream* aStream, Red::CName aNodeName, bool aUnk1, bool aIsOptional)
-        : m_stream(nullptr)
-        , m_nodeIsPresentInSave(false)
-        , unk09(false)
-    {
-        Ctor(this, aStream, aNodeName, aUnk1, aIsOptional);
-    }
-
-    ~NodeAccessor()
-    {
-        Dtor(this);
-    }
-
-    bool IsGood()
-    {
-        return IsGoodNode(this);
-    }
+    NodeAccessor(Red::BaseStream* aStream, Red::CName aNodeName, bool aUnk1, bool aIsOptional) noexcept;
+    ~NodeAccessor() noexcept;
+    bool IsGood() noexcept;
 };
 
 RED4EXT_ASSERT_SIZE(NodeAccessor, 0x10);
@@ -68,78 +54,42 @@ struct LoadStream
     static constexpr auto GetSaveNameFunc = util::RawVFunc<0x58, void* (*)(Red::BaseStream*, Red::CString&)>();
     static constexpr auto InitializeFunc = util::RawVFunc<0x68, bool (*)(Red::BaseStream*)>();
     static constexpr auto Unk90Func = util::RawVFunc<0x90, bool (*)(Red::BaseStream*)>(); // Maybe IsOK or something?
+    
+    static constexpr auto ReadBufferFunc =
+        util::RawFunc<detail::Hashes::BaseStream_ReadRawBuffer, void (*)(Red::RawBuffer*, Red::BaseStream*)>();
 
-    ~LoadStream() noexcept
-    {
-        Destruct(this);
-    }
+    static constexpr auto ReadPackageFunc =
+        util::RawFunc<detail::Hashes::BaseStream_ReadPackageSerializedObject,
+                      void* (*)(Red::Handle<Red::ISerializable>&, Red::BaseStream*, Red::CClass*)>();
 
-    static LoadStream Create(Red::BaseStream* aStream, Red::save::Metadata& aMetadata)
-    {
-        LoadStream ret{};
+    ~LoadStream() noexcept;
 
-        AllocAndConstruct(ret, aStream, aMetadata);
-
-        return ret;
-    }
+    static LoadStream Create(Red::BaseStream* aStream, Red::save::Metadata& aMetadata) noexcept;
 
     LoadStream() = default;
     LoadStream(const LoadStream&) = delete;
     LoadStream& operator=(const LoadStream&) = delete;
     LoadStream(LoadStream&&) = default;
+    LoadStream& operator=(LoadStream&&) = default;
 
-    Red::BaseStream* operator->() noexcept
-    {
-        return m_stream;
-    }
+    Red::BaseStream* operator->() noexcept;
+    Red::BaseStream* const operator->() const noexcept;
+    operator Red::BaseStream*() noexcept;
+    operator Red::BaseStream* const() const noexcept;
 
-    Red::BaseStream* const operator->() const noexcept
-    {
-        return m_stream;
-    }
+    operator bool() const noexcept;
 
-    operator Red::BaseStream*() noexcept
-    {
-        return m_stream;
-    }
+    std::uint32_t GetSaveVersion() noexcept;
+    std::uint32_t GetGameVersion() noexcept;
+    Red::CString GetSaveName() noexcept;
 
-    operator Red::BaseStream* const() const noexcept
-    {
-        return m_stream;
-    }
+    bool Initialize() noexcept;
+    bool IsGood() noexcept;
 
-    operator bool() const noexcept
-    {
-        return m_stream != nullptr;
-    }
+    Red::RawBuffer ReadBuffer() noexcept;
 
-    std::uint32_t GetSaveVersion()
-    {
-        return GetSaveVersionFunc(m_stream);
-    }
-
-    std::uint32_t GetGameVersion()
-    {
-        return GetGameVersionFunc(m_stream);
-    }
-
-    Red::CString GetSaveName()
-    {
-        Red::CString ret{};
-        GetSaveNameFunc(m_stream, ret);
-
-        return ret;
-    }
-
-    bool Initialize()
-    {
-        return InitializeFunc(m_stream);
-    }
-
-    bool IsGood()
-    {
-        return Unk90Func(m_stream);
-    }
+    // Reads a package, this is used in stats system reader by the game
+    Red::Handle<Red::ISerializable> ReadPackage(Red::CClass* aType) noexcept;
 
     Red::BaseStream* m_stream{};
 };

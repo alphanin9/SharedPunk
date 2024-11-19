@@ -4,7 +4,6 @@
 
 namespace shared::util
 {
-
 template<std::size_t N>
 struct StaticString
 {

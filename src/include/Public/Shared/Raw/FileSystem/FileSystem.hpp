@@ -25,6 +25,8 @@ struct RedFileStream
     RedFileStream() = default;
     RedFileStream(const RedFileStream&) = delete;
     RedFileStream& operator=(const RedFileStream&) = delete;
+
+    RedFileStream& operator=(RedFileStream&&) = default;
     RedFileStream(RedFileStream&&) = default;
     ~RedFileStream() noexcept;
 
@@ -47,6 +49,8 @@ struct BufferedRedFileStream
     BufferedRedFileStream() = default;
     BufferedRedFileStream(const BufferedRedFileStream&) = delete;
     BufferedRedFileStream& operator=(const BufferedRedFileStream&) = delete;
+
+    BufferedRedFileStream& operator=(BufferedRedFileStream&&) = default;
     BufferedRedFileStream(BufferedRedFileStream&&) = default;
     ~BufferedRedFileStream() noexcept;
 

@@ -85,6 +85,7 @@ BufferedRedFileStream::operator bool() const noexcept
 }
 #pragma endregion
 
+#pragma region FileManager
 RedFileManager* RedFileManager::GetInstance() noexcept
 {
     return Instance;
@@ -114,3 +115,4 @@ BufferedRedFileStream RedFileManager::OpenBufferedFileStream(const CString& aPat
 
     return ret;
 }
+#pragma endregion

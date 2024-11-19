@@ -5,6 +5,12 @@ namespace shared::detail::Hashes
 constexpr auto Assert_RaiseAssert = 4285205681u;
 #pragma endregion
 
+#pragma region BaseStream
+constexpr auto BaseStream_ReadPackageSerializedObject = 125247621u;
+constexpr auto BaseStream_ReadRawBuffer = 840633836u;
+constexpr auto BaseStream_ReadPackedInt32 = 1068371480u;
+#pragma endregion
+
 #pragma region FileSystem
 constexpr auto FileStream_dtor = 1924865980u;
 constexpr auto FileStream_Buffered_dtor = 2577866805u;
