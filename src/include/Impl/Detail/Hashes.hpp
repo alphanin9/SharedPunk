@@ -39,6 +39,15 @@ constexpr auto InkLoadingScreenHandler_SetUnknownVar = 3771669141u;
 constexpr auto InkLoadingLayer_SetUnknownVar = 1370036335u;
 #pragma endregion
 
+#pragma region Package
+constexpr auto Package_ScriptableSystemPackageReader_Dtor = 61674160u;
+constexpr auto Package_ScriptableSystemPackageReader_OnReadHeader = 178987303u;
+
+constexpr auto Package_ScriptableSystemExtractor_Dtor = 3117353752u;
+constexpr auto Package_ScriptableSystemExtractor_LoadFromHeader = 975180661u;
+constexpr auto Package_ScriptableSystemExtractor_ReadObjByIndex = 2925991362u;
+#pragma endregion
+
 #pragma region PlayerSystem
 constexpr auto PlayerSystem_GetPlayerControlledGameObject = 3420005096u;
 #pragma endregion
