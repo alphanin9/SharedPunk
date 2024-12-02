@@ -20,6 +20,7 @@ target("redlib")
     add_includedirs("deps/redlib/include/", { public = true })
 
 target("cp2077-shared-data")
+    set_default(false)
     set_kind("static")
     if is_mode("ci") then
         set_warnings("all", "error")
