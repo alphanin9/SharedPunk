@@ -51,7 +51,6 @@ namespace LoadingScreen
 constexpr auto SetUnknownVarInInitialLoadingScreen =
     util::RawFunc<detail::Hashes::InkLoadingLayer_SetUnknownVar, void (*)(void*, uint32_t)>();
 
-using LoadingScreenTDBID = util::OffsetPtr<0x208, Red::TweakDBID>;
 }; // namespace LoadingScreen
 
 namespace SessionData
@@ -89,7 +88,7 @@ struct Data
 
 namespace SystemRequestsHandler
 {
-using InputDeviceId = util::OffsetPtr<0x570, std::uint64_t>;
+using InputDeviceId = util::OffsetPtr<0x630, std::uint64_t>;
 constexpr auto StartSession = util::RawFunc<detail::Hashes::InkSystemRequestsHandler_StartSession,
                                             void* (*)(Red::ink::ISystemRequestsHandler*, SessionData::Data*)>();
 constexpr auto ExitToMenu = util::RawFunc<detail::Hashes::InkSystemRequestsHandler_ExitToMainMenu,
