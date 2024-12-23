@@ -11,6 +11,10 @@ constexpr auto BaseStream_ReadRawBuffer = 840633836u;
 constexpr auto BaseStream_ReadPackedInt32 = 1068371480u;
 #pragma endregion
 
+#pragma region CharacterCustomizationSystem
+constexpr auto CharacterCustomizationSystem_OnNewGame = 2393518559u;
+#pragma endregion
+
 #pragma region FileSystem
 constexpr auto FileStream_dtor = 1924865980u;
 constexpr auto FileStream_Buffered_dtor = 2577866805u;
