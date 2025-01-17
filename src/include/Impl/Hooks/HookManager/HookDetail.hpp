@@ -2,7 +2,6 @@
 
 #include <Shared/Raw/Assert/AssertionFailed.hpp>
 #include <Impl/Hooks/Driver/MinHookDriver.hpp>
-#include <intrin.h>
 
 namespace shared::hook
 {
@@ -58,9 +57,6 @@ struct HookResult
                 }
             }
         }
-
-        // Break again, just in case!
-        __debugbreak();
     }
 
     bool success;
