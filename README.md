@@ -27,5 +27,5 @@ it should not be necessary to include anything from there directly**
 ```cpp
 #include <Shared/Util/Core.hpp>
 
-constexpr auto fn = util::RawFunc<...>();
+constexpr auto fn = shared::util::RawFunc<...>();
 ```
