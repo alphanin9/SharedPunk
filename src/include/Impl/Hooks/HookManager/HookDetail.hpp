@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Shared/Raw/Assert/AssertionFailed.hpp>
-#include <Impl/Hooks/Driver/MinHookDriver.hpp>
+#include <Impl/Hooks/Driver/HookingDriver.hpp>
 
 namespace shared::hook
 {
@@ -275,7 +275,7 @@ public:
     using HandleFunc = OriginalFunc;
     using DisposeFunc = void (*)();
 
-    inline static bool Attach(MinHookDriver& aDriver, HandleFunc aHandler, DisposeFunc aDisposer,
+    inline static bool Attach(HookingDriver& aDriver, HandleFunc aHandler, DisposeFunc aDisposer,
                               OriginalFunc* aOriginal)
     {
         if (s_attached)
@@ -350,7 +350,7 @@ private:
     inline static HandleFunc s_handler = nullptr;
     inline static DisposeFunc s_disposer = nullptr;
     inline static OriginalFunc s_original = nullptr;
-    inline static MinHookDriver* s_driver = nullptr;
+    inline static HookingDriver* s_driver = nullptr;
     inline static uintptr_t s_address = 0;
     inline static bool s_attached = false;
 };
@@ -504,7 +504,7 @@ public:
         }
     }
 
-    inline static HookResult<TOffset> Attach(MinHookDriver& aDriver, TWrapper aCallback, Original* aOriginal = nullptr)
+    inline static HookResult<TOffset> Attach(HookingDriver& aDriver, TWrapper aCallback, Original* aOriginal = nullptr)
     {
         using Instance = HookInstance<Raw>;
 
