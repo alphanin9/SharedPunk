@@ -1,5 +1,5 @@
 set_languages("c++latest")
-add_requires("zydis")
+add_requires("safetyhook")
 
 target("cp2077-shared-data")
     set_kind("static")
@@ -15,7 +15,8 @@ target("cp2077-shared-data")
     add_headerfiles("src/include/**.hpp")
     add_syslinks("Version", "User32")
     add_defines("WINVER=0x0601", "WIN32_LEAN_AND_MEAN", "NOMINMAX")
-    add_deps("red4ext.sdk", "redlib", "safetyhook")
+    add_packages("safetyhook")
+    add_deps("red4ext.sdk", "redlib")
 
 target("red4ext.sdk")
     set_default(false)
@@ -37,18 +38,6 @@ target("redlib")
     add_headerfiles("deps/redlib/include/**.hpp")
     add_includedirs("deps/redlib/vendor/", { public = true })
     add_includedirs("deps/redlib/include/", { public = true })
-
-target("safetyhook")
-    set_default(false)
-    set_warnings("none")
-    set_kind("static")
-    set_group("deps")
-    -- NOTE: The .asm files are there to paste the machine code of into src/mid_hook.cpp
-    add_files("deps/safetyhook/src/**.cpp")
-    add_headerfiles("deps/safetyhook/include/**.hpp")
-    add_includedirs("deps/safetyhook/include/", { public = true })
-    add_cxflags("/GR-")
-    add_packages("zydis")
 
 add_rules("plugin.vsxmake.autoupdate")
 
