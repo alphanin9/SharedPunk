@@ -37,12 +37,12 @@ struct InkSystem
     uint8_t unk00[0x2E8];                                                // 000
     Red::WeakHandle<Red::ink::Widget> m_inputWidget;                     // 2E8
     uint16_t m_keyboardState;                                            // 2F8
-    uint8_t unk2FA[0x368 - 0x2FA];                                       // 2FA
-    Red::WeakHandle<Red::ink::ISystemRequestsHandler> m_requestsHandler; // 368
-    Red::DynArray<Red::SharedPtr<InkLayerManager>> m_layerManagers;      // 378
+    uint8_t unk2FA[0x370 - 0x2FA];                                       // 2FA
+    Red::WeakHandle<Red::ink::ISystemRequestsHandler> m_requestsHandler; // 370
+    Red::DynArray<Red::SharedPtr<InkLayerManager>> m_layerManagers;      // 380
 };
-RED4EXT_ASSERT_OFFSET(InkSystem, m_requestsHandler, 0x368);
-RED4EXT_ASSERT_OFFSET(InkSystem, m_layerManagers, 0x378);
+RED4EXT_ASSERT_OFFSET(InkSystem, m_requestsHandler, 0x370);
+RED4EXT_ASSERT_OFFSET(InkSystem, m_layerManagers, 0x380);
 
 constexpr auto InkSystemInstance = util::RawPtr<detail::Hashes::InkSystem_Instance, InkSystem*>();
 
