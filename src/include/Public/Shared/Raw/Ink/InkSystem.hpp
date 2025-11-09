@@ -89,8 +89,9 @@ struct Data
 
 namespace SystemRequestsHandler
 {
-using IsPreGame = util::RawVFunc<0x178, bool (*)(Red::ink::ISystemRequestsHandler*)>;
 using InputDeviceId = util::OffsetPtr<0x630, std::uint64_t>;
+constexpr auto IsPreGame = util::RawVFunc<0x178, bool (*)(Red::ink::ISystemRequestsHandler*)>();
+
 constexpr auto StartSession = util::RawFunc<detail::Hashes::InkSystemRequestsHandler_StartSession,
                                             void* (*)(Red::ink::ISystemRequestsHandler*, SessionData::Data*)>();
 constexpr auto ExitToMenu = util::RawFunc<detail::Hashes::InkSystemRequestsHandler_ExitToMainMenu,
