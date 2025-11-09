@@ -62,9 +62,10 @@ enum class ESessionUnkEnum : std::uint8_t
 
 struct Data
 {
-    static constexpr auto AddArgumentInternal = util::RawFunc<detail::Hashes::SessionData_AddArgumentToList,
-                                                       void* (*)(Red::DynArray<Red::SharedPtr<Red::ISerializable>>&,
-                                                                 Red::CName, Red::CBaseRTTIType*, void*)>();
+    static constexpr auto AddArgumentInternal =
+        util::RawFunc<detail::Hashes::SessionData_AddArgumentToList,
+                      void* (*)(Red::DynArray<Red::SharedPtr<Red::ISerializable>>&, Red::CName, Red::CBaseRTTIType*,
+                                void*)>();
     static constexpr auto Dtor = util::RawFunc<detail::Hashes::SessionData_dtor, void* (*)(void*)>();
 
     ESessionUnkEnum m_unk{}; // 00
@@ -88,14 +89,14 @@ struct Data
 
 namespace SystemRequestsHandler
 {
-using IsPreGame = util::RawVFunc<0x178, bool(*)(Red::ink::ISystemRequestsHandler*)>;
+using IsPreGame = util::RawVFunc<0x178, bool (*)(Red::ink::ISystemRequestsHandler*)>;
 using InputDeviceId = util::OffsetPtr<0x630, std::uint64_t>;
 constexpr auto StartSession = util::RawFunc<detail::Hashes::InkSystemRequestsHandler_StartSession,
                                             void* (*)(Red::ink::ISystemRequestsHandler*, SessionData::Data*)>();
 constexpr auto ExitToMenu = util::RawFunc<detail::Hashes::InkSystemRequestsHandler_ExitToMainMenu,
                                           void* (*)(Red::ink::ISystemRequestsHandler*)>();
 
-using StartNewGame = void(*)(Red::ink::ISystemRequestsHandler*, Red::Handle<Red::IScriptable>&);
+using StartNewGame = void (*)(Red::ink::ISystemRequestsHandler*, Red::Handle<Red::IScriptable>&);
 
 constexpr auto StartNewGameFn = util::RawFunc<detail::Hashes::InkSystemRequestsHandler_StartNewGame, StartNewGame>();
 }; // namespace SystemRequestsHandler
