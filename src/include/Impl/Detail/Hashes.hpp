@@ -43,6 +43,11 @@ constexpr auto InkLoadingScreenHandler_SetUnknownVar = 3771669141u;
 constexpr auto InkLoadingLayer_SetUnknownVar = 1370036335u;
 #pragma endregion
 
+#pragma region Localization
+constexpr auto LocalizationManager_Instance = 990843954u;
+constexpr auto LocalizationManager_GetOnscreen = 2680167661u;
+#pragma endregion
+
 #pragma region Package
 constexpr auto Package_ScriptableSystemPackageReader_Dtor = 61674160u;
 constexpr auto Package_ScriptableSystemPackageReader_OnReadHeader = 178987303u;
@@ -102,4 +107,4 @@ constexpr auto Telemetry_LoadUsedFactsForImportantFactsList = 3923848734u;
 #pragma region World
 constexpr auto World_IsInInterior = 3384552122u;
 #pragma endregion
-}; // namespace detail::Hashes
+}; // namespace shared::detail::Hashes
