@@ -8,7 +8,7 @@
 #include <RED4ext/Scripting/Natives/Generated/game/JournalEntryState.hpp>
 #include <RED4ext/Scripting/Natives/Generated/game/JournalManager.hpp>
 
-namespace shared::util::JournalManager
+namespace shared::raw::JournalManager
 {
 constexpr auto GetEntryByHash =
     shared::util::RawVFunc<0x220, void* (Red::gameIJournalManager::*)(Red::Handle<Red::gameJournalEntry> & aOut,
