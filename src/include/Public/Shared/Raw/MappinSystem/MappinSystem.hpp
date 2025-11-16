@@ -3,10 +3,11 @@
 #include <Shared/Util/Core.hpp>
 
 #include <RED4ext/RED4ext.hpp>
-#include <RED4ext/Scripting/Natives/Generated/game/mappins/IMappin.hpp>
 #include <RED4ext/Scripting/Natives/Generated/game/NewMappinID.hpp>
 #include <RED4ext/Scripting/Natives/Generated/game/data/MappinPhase.hpp>
 #include <RED4ext/Scripting/Natives/Generated/game/data/MappinVariant.hpp>
+#include <RED4ext/Scripting/Natives/Generated/game/mappins/IMappin.hpp>
+#include <RED4ext/Scripting/Natives/Generated/game/mappins/MappinSystem.hpp>
 
 #include <RedLib.hpp>
 
