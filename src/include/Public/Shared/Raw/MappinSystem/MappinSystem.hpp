@@ -15,11 +15,7 @@ namespace shared::raw
 {
 namespace Mappin
 {
-using MappinTrackerID = std::uint64_t;
-RED4EXT_ASSERT_SIZE(MappinTrackerID, 8u);
-
-using TrackID = util::OffsetPtr<0x40, MappinTrackerID>;
-using MappinID = util::OffsetPtr<0x80, Red::game::NewMappinID>;
+using MappinID = util::OffsetPtr<0x40, Red::game::NewMappinID>;
 using IsTrackedByPlayer = util::OffsetPtr<0x84, bool>;
 
 constexpr auto IsVisible = util::RawVFunc<0x128, bool (*)(Red::game::mappins::IMappin*)>();
@@ -44,9 +40,7 @@ struct MappinData
 using MappinLock = util::OffsetPtr<0x198, Red::SharedSpinLock>;
 using MappinList = util::OffsetPtr<0x1A0, Red::SortedArray<MappinData>>;
 
-// Note: not quite sure what ID is, mappin + 0x40
-// Untrack is prob 0x228
 constexpr auto TrackMappinByID =
-    util::RawVFunc<0x220, void (*)(Red::game::mappins::MappinSystem*, Mappin::MappinTrackerID)>();
+    util::RawVFunc<0x220, void (*)(Red::game::mappins::MappinSystem*, Red::game::NewMappinID)>();
 }; // namespace MappinSystem
 }; // namespace shared::raw
