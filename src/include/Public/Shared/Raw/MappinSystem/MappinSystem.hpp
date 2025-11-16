@@ -29,6 +29,17 @@ constexpr auto GetMappinVariant =
     util::RawVFunc<0x198, Red::game::data::MappinVariant (*)(Red::game::mappins::IMappin*)>();
 
 }; // namespace Mappin
+
+namespace QuestMappin
+{
+    using JournalPathHash = util::OffsetPtr<0x88, std::uint32_t>;
+};
+
+namespace PoiMappin
+{
+    using JournalPathHash = util::OffsetPtr<0x8C, std::uint32_t>;
+};
+
 namespace MappinSystem
 {
 struct MappinData
