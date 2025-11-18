@@ -11,8 +11,9 @@
 #include <RED4ext/Scripting/Natives/Generated/ink/LoadingLayer.hpp>
 #include <RED4ext/Scripting/Natives/inkLayer.hpp>
 #include <RED4ext/Scripting/Natives/inkWidget.hpp>
-
 #include <RED4ext/Scripting/Natives/Generated/ink/InitialLoadingScreenSaveData.hpp>
+#include <RED4ext/Scripting/Natives/Generated/EInputKey.hpp>
+#include <RED4ext/Scripting/Natives/Generated/EInputAction.hpp>
 
 namespace shared::raw::Ink
 {
@@ -27,16 +28,50 @@ struct InkLayerManager
 };
 RED4EXT_ASSERT_OFFSET(InkLayerManager, layers, 0x38);
 
+struct RawInputData
+{
+    Red::EInputKey key;       // 00
+    Red::EInputAction action; // 04
+    float value;         // 08
+    uint32_t mouseX;     // 0C
+    uint32_t mouseY;     // 10
+    uint32_t unk14;      // 14
+    uint32_t unk18;      // 18
+    uint64_t unk20;      // 20
+    uint64_t unk28;      // 28
+    uint64_t unk30;      // 30
+    uint64_t unk38;      // 38
+};
+RED4EXT_ASSERT_SIZE(RawInputData, 0x40);
+
+struct RawInputBuffer
+{
+    // We don't care about game vtbl
+    virtual ~RawInputBuffer() = default;
+    virtual Red::DynArray<RawInputData>& GetInputs() = 0;
+
+    Red::DynArray<RawInputData> inputs;
+};
+
+struct SyntheticInputBuffer : public RawInputBuffer
+{
+    ~SyntheticInputBuffer() override;
+    Red::DynArray<RawInputData>& GetInputs() override;
+};
+
 struct InkSystem
 {
+    static constexpr auto ProcessInputEvents = util::RawFunc<detail::Hashes::InkSystem_ProcessInputEvents, void (*)(InkSystem*, float*, RawInputBuffer&)>();
+
     static InkSystem* Get() noexcept;
     InkLayerManager* GetLayerManager() noexcept;
 
     void SetInitialLoadingScreenTDBID(Red::TweakDBID aId) noexcept;
+    void InjectSyntheticInput(RawInputBuffer& aInputBuffer) noexcept;
 
     uint8_t unk00[0x2E8];                                                // 000
     Red::WeakHandle<Red::ink::Widget> m_inputWidget;                     // 2E8
-    uint16_t m_keyboardState;                                            // 2F8
+    uint16_t m_keyboardState;                                            // 2F8 - Note: this is actually bitfield
     uint8_t unk2FA[0x370 - 0x2FA];                                       // 2FA
     Red::WeakHandle<Red::ink::ISystemRequestsHandler> m_requestsHandler; // 370
     Red::DynArray<Red::SharedPtr<InkLayerManager>> m_layerManagers;      // 380

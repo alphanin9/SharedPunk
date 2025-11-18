@@ -3,6 +3,7 @@
 #include <Shared/Util/Core.hpp>
 
 #include <RED4ext/RED4ext.hpp>
+#include <RED4ext/Scripting/Natives/Generated/game/FastTravelPointData.hpp>
 #include <RED4ext/Scripting/Natives/Generated/game/NewMappinID.hpp>
 #include <RED4ext/Scripting/Natives/Generated/game/data/MappinPhase.hpp>
 #include <RED4ext/Scripting/Natives/Generated/game/data/MappinVariant.hpp>
@@ -16,6 +17,7 @@ namespace shared::raw
 namespace Mappin
 {
 using MappinID = util::OffsetPtr<0x40, Red::game::NewMappinID>;
+using Distance = util::OffsetPtr<0x7C, float>;
 using IsTrackedByPlayer = util::OffsetPtr<0x84, bool>;
 
 constexpr auto IsVisible = util::RawVFunc<0x128, bool (*)(Red::game::mappins::IMappin*)>();
@@ -32,12 +34,17 @@ constexpr auto GetMappinVariant =
 
 namespace QuestMappin
 {
-    using JournalPathHash = util::OffsetPtr<0x88, std::uint32_t>;
+using JournalPathHash = util::OffsetPtr<0x88, std::uint32_t>;
 };
 
 namespace PoiMappin
 {
-    using JournalPathHash = util::OffsetPtr<0x8C, std::uint32_t>;
+using JournalPathHash = util::OffsetPtr<0x8C, std::uint32_t>;
+};
+
+namespace FastTravelMappin
+{
+using PointData = util::OffsetPtr<0x108, Red::Handle<Red::FastTravelPointData>>;
 };
 
 namespace MappinSystem

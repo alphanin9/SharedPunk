@@ -4,6 +4,15 @@
 using namespace Red;
 using namespace shared::raw;
 
+Ink::SyntheticInputBuffer::~SyntheticInputBuffer()
+{
+}
+
+DynArray<Ink::RawInputData>& Ink::SyntheticInputBuffer::GetInputs()
+{
+    return inputs;
+}
+
 Ink::InkSystem* Ink::InkSystem::Get() noexcept
 {
     return InkSystemInstance;
@@ -42,6 +51,13 @@ void Ink::InkSystem::SetInitialLoadingScreenTDBID(TweakDBID aId) noexcept
 
     Quest::SetNextLoadingScreen::Execute(nodeDefinition);
     Ink::LoadingScreen::SetUnknownVarInInitialLoadingScreen(loadingLayer, 2u);
+}
+
+void Ink::InkSystem::InjectSyntheticInput(RawInputBuffer& aInputBuffer) noexcept
+{
+    float a2 = 0.f;
+
+    ProcessInputEvents(this, &a2, aInputBuffer);
 }
 
 Ink::SessionData::Data::Data() noexcept
