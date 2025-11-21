@@ -13,6 +13,75 @@ DynArray<Ink::RawInputData>& Ink::SyntheticInputBuffer::GetInputs()
     return inputs;
 }
 
+void Ink::SyntheticInputBuffer::Unk10()
+{
+}
+
+void Ink::SyntheticInputBuffer::Unk18()
+{
+}
+
+void Ink::SyntheticInputBuffer::Unk20()
+{
+}
+
+void Ink::SyntheticInputBuffer::Unk28()
+{
+}
+
+void Ink::SyntheticInputBuffer::Unk30()
+{
+}
+
+void Ink::SyntheticInputBuffer::Unk38()
+{
+}
+
+void Ink::SyntheticInputBuffer::Unk40()
+{
+}
+
+void Ink::SyntheticInputBuffer::Unk48()
+{
+}
+
+void Ink::SyntheticInputBuffer::Unk50()
+{
+}
+
+void Ink::SyntheticInputBuffer::Unk58()
+{
+}
+
+void Ink::SyntheticInputBuffer::Unk60()
+{
+}
+
+void Ink::SyntheticInputBuffer::Unk68()
+{
+}
+
+void Ink::SyntheticInputBuffer::Unk70()
+{
+}
+
+void Ink::SyntheticInputBuffer::Unk78()
+{
+}
+
+void Ink::SyntheticInputBuffer::Unk80()
+{
+}
+
+void Ink::SyntheticInputBuffer::Unk88()
+{
+}
+
+int Ink::SyntheticInputBuffer::Unk90()
+{
+    return 0;
+}
+
 Ink::InkSystem* Ink::InkSystem::Get() noexcept
 {
     return InkSystemInstance;

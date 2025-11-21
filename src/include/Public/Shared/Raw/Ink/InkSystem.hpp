@@ -7,13 +7,13 @@
 
 #include <RED4ext/Scripting/Natives/Generated/ink/ISystemRequestsHandler.hpp>
 
+#include <RED4ext/Scripting/Natives/Generated/EInputAction.hpp>
+#include <RED4ext/Scripting/Natives/Generated/EInputKey.hpp>
 #include <RED4ext/Scripting/Natives/Generated/ink/FullScreenLayer.hpp>
+#include <RED4ext/Scripting/Natives/Generated/ink/InitialLoadingScreenSaveData.hpp>
 #include <RED4ext/Scripting/Natives/Generated/ink/LoadingLayer.hpp>
 #include <RED4ext/Scripting/Natives/inkLayer.hpp>
 #include <RED4ext/Scripting/Natives/inkWidget.hpp>
-#include <RED4ext/Scripting/Natives/Generated/ink/InitialLoadingScreenSaveData.hpp>
-#include <RED4ext/Scripting/Natives/Generated/EInputKey.hpp>
-#include <RED4ext/Scripting/Natives/Generated/EInputAction.hpp>
 
 namespace shared::raw::Ink
 {
@@ -32,36 +32,54 @@ struct RawInputData
 {
     Red::EInputKey key;       // 00
     Red::EInputAction action; // 04
-    float value;         // 08
-    uint32_t mouseX;     // 0C
-    uint32_t mouseY;     // 10
-    uint32_t unk14;      // 14
-    uint32_t unk18;      // 18
-    uint64_t unk20;      // 20
-    uint64_t unk28;      // 28
-    uint64_t unk30;      // 30
-    uint64_t unk38;      // 38
+    float value;              // 08
+    uint32_t mouseX;          // 0C
+    uint32_t mouseY;          // 10
+    uint32_t unk14;           // 14
+    uint32_t unk18;           // 18, Note: input process checks this to be 1
+    uint64_t unk20;           // 20
+    uint64_t unk28;           // 28, Note: might be input device ID or something?
+    uint64_t unk30;           // 30
+    uint64_t unk38;           // 38
 };
 RED4EXT_ASSERT_SIZE(RawInputData, 0x40);
 
 struct RawInputBuffer
 {
     // We don't care about game vtbl
-    virtual ~RawInputBuffer() = default;
-    virtual Red::DynArray<RawInputData>& GetInputs() = 0;
+    virtual ~RawInputBuffer() = default;                  // 00
+    virtual Red::DynArray<RawInputData>& GetInputs() = 0; // 08
 
     Red::DynArray<RawInputData> inputs;
 };
 
 struct SyntheticInputBuffer : public RawInputBuffer
 {
-    ~SyntheticInputBuffer() override;
-    Red::DynArray<RawInputData>& GetInputs() override;
+    ~SyntheticInputBuffer() override;                  // 00
+    Red::DynArray<RawInputData>& GetInputs() override; // 08
+    virtual void Unk10();                              // 10
+    virtual void Unk18();                              // 18
+    virtual void Unk20();                              // 20
+    virtual void Unk28();                              // 28
+    virtual void Unk30();                              // 30
+    virtual void Unk38();                              // 38
+    virtual void Unk40();                              // 40
+    virtual void Unk48();                              // 48
+    virtual void Unk50();                              // 50
+    virtual void Unk58();                              // 58
+    virtual void Unk60();                              // 60
+    virtual void Unk68();                              // 68
+    virtual void Unk70();                              // 70
+    virtual void Unk78();                              // 78
+    virtual void Unk80();                              // 80
+    virtual void Unk88();                              // 88
+    virtual int Unk90();                               // 90
 };
 
 struct InkSystem
 {
-    static constexpr auto ProcessInputEvents = util::RawFunc<detail::Hashes::InkSystem_ProcessInputEvents, void (*)(InkSystem*, float*, RawInputBuffer&)>();
+    static constexpr auto ProcessInputEvents =
+        util::RawFunc<detail::Hashes::InkSystem_ProcessInputEvents, void (*)(InkSystem*, float*, RawInputBuffer&)>();
 
     static InkSystem* Get() noexcept;
     InkLayerManager* GetLayerManager() noexcept;

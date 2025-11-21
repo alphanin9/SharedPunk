@@ -58,6 +58,10 @@ constexpr auto Package_ScriptableSystemExtractor_LoadFromHeader = 975180661u;
 constexpr auto Package_ScriptableSystemExtractor_ReadObjByIndex = 2925991362u;
 #pragma endregion
 
+#pragma region Player
+constexpr auto Player_ProcessInput = 3535541945u;
+#pragma endregion
+
 #pragma region PlayerSystem
 constexpr auto PlayerSystem_GetPlayerControlledGameObject = 3420005096u;
 #pragma endregion
