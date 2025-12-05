@@ -8,12 +8,12 @@ LocalizationSystem* LocalizationSystem::GetInstance()
 	return Instance;
 }
 
-void LocalizationSystem::GetOnscreen(Red::CString& aOut, Red::StringView& aKey)
+void LocalizationSystem::GetOnscreen(Red::CString& aOut, const Red::StringView& aKey)
 {
 	FetchOnscreen(this, aOut, aKey);
 }
 
-CString LocalizationSystem::GetOnscreen(Red::StringView& aKey)
+CString LocalizationSystem::GetOnscreen(const Red::StringView& aKey)
 {
     CString out{};
     FetchOnscreen(this, out, aKey);

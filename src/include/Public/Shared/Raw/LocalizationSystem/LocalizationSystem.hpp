@@ -14,13 +14,13 @@ struct LocalizationSystem
 
     static constexpr auto FetchOnscreen =
         util::RawFunc<detail::Hashes::LocalizationManager_GetOnscreen,
-                      Red::CString* (*)(LocalizationSystem*, Red::CString&, Red::StringView&)>();
+                      Red::CString* (*)(LocalizationSystem*, Red::CString&, const Red::StringView&)>();
 
     static LocalizationSystem* GetInstance();
 
-    void GetOnscreen(Red::CString& aOut, Red::StringView& aKey);
+    void GetOnscreen(Red::CString& aOut, const Red::StringView& aKey);
 
-    Red::CString GetOnscreen(Red::StringView& aKey);
+    Red::CString GetOnscreen(const Red::StringView& aKey);
 };
 
 }; // namespace shared::raw::Localization
