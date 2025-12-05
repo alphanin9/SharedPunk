@@ -19,6 +19,8 @@ struct LocalizationSystem
     static LocalizationSystem* GetInstance();
 
     void GetOnscreen(Red::CString& aOut, Red::StringView& aKey);
+
+    Red::CString GetOnscreen(Red::StringView& aKey);
 };
 
 }; // namespace shared::raw::Localization
