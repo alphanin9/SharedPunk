@@ -18,6 +18,6 @@ constexpr auto GetEntryState = shared::util::RawVFunc<0x2B0, Red::gameJournalEnt
                                                                  Red::Handle<Red::gameJournalEntry>& aEntry)>();
 
 constexpr auto GetParentEntry =
-    shared::util::RawVFunc<0x370, void* (Red::gameIJournalManager::*)(Red::WeakHandle<Red::gameJournalEntry>& aOut,
-                                                                      Red::WeakHandle<Red::gameJournalEntry>& aEntry)>();
+    shared::util::RawVFunc<0x370, void* (Red::gameIJournalManager::*)(Red::Handle<Red::gameJournalEntry>& aOut,
+                                                                      Red::Handle<Red::gameJournalEntry>& aEntry)>();
 } // namespace shared::util::JournalManager
