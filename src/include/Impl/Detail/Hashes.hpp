@@ -105,6 +105,10 @@ constexpr auto SessionData_dtor = 3460762581u;
 constexpr auto SessionData_AddArgumentToList = 188748408u;
 #pragma endregion
 
+#pragma region String
+constexpr auto String_Printf = 3532196673u;
+#pragma endregion
+
 #pragma region Telemetry
 constexpr auto Telemetry_LoadUsedFactsForImportantFactsList = 3923848734u;
 #pragma endregion
