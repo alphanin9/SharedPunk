@@ -106,7 +106,9 @@ constexpr auto SessionData_AddArgumentToList = 188748408u;
 #pragma endregion
 
 #pragma region String
-constexpr auto String_Printf = 3532196673u;
+constexpr auto UTF16String_Dtor = 4012379284u;
+constexpr auto UTF16String_FormatWithParameterSet = 946611643u;
+constexpr auto UTF16String_FromStringView = 21370664u;
 #pragma endregion
 
 #pragma region Telemetry
