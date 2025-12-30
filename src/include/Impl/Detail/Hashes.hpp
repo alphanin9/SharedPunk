@@ -44,6 +44,19 @@ constexpr auto InkLoadingScreenHandler_SetUnknownVar = 3771669141u;
 constexpr auto InkLoadingLayer_SetUnknownVar = 1370036335u;
 #pragma endregion
 
+#pragma region JSON
+constexpr auto JSONParser_ctor = 500317868u;
+constexpr auto JSONParser_dtor = 2945190597u;
+constexpr auto JSONParser_ParseFromString = 3375830502u;
+constexpr auto JSONParser_UnkHandleImportTable = 3191935417u;
+constexpr auto JSONParser_UnkHandleExportTable = 3210023360u;
+constexpr auto JSONParser_SerializeToHandle = 4178123495u;
+
+constexpr auto JSONSerializer_ctor = 1168969517u;
+constexpr auto JSONSerializer_dtor = 2222264486u;
+constexpr auto JSONSerializer_SerializeToString = 3959706656u;
+#pragma endregion
+
 #pragma region Localization
 constexpr auto LocalizationManager_Instance = 990843954u;
 constexpr auto LocalizationManager_GetOnscreen = 2680167661u;
