@@ -6,7 +6,7 @@ using namespace shared::util;
 
 CName shared::util::EnumValueToString(Red::CEnum* aEnum, int64_t aEnumValue)
 {
-    for (auto i = 0u; i < aEnum->valueList.size; ++i)
+    for (auto i = 0u; i < aEnum->valueList.Size(); ++i)
     {
         if (aEnum->valueList[i] == aEnumValue)
         {
