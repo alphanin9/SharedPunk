@@ -124,6 +124,11 @@ constexpr auto UTF16String_FormatWithParameterSet = 946611643u;
 constexpr auto UTF16String_FromStringView = 21370664u;
 #pragma endregion
 
+#pragma region TargetingSystem
+constexpr auto TargetingSystem_GetTargetParts = 3000974284u;
+constexpr auto TS_TargetPartInfo_LookupPartAngleInfo = 1235100073u;
+#pragma endregion
+
 #pragma region Telemetry
 constexpr auto Telemetry_LoadUsedFactsForImportantFactsList = 3923848734u;
 #pragma endregion
