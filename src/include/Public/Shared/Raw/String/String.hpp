@@ -70,7 +70,7 @@ struct UTF16String
         Red::DynArray<char> buffer;
         
         buffer.Reserve(utf8Length + 1);
-        buffer.size = utf8Length;
+        buffer.Resize(utf8Length);
 
         ::WideCharToMultiByte(CP_UTF8, 0, data, static_cast<int>(count), buffer.Data(), utf8Length, nullptr, nullptr);
 
