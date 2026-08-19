@@ -6,9 +6,20 @@ Credits to [psiberx](https://github.com/psiberx), a lot of this library is rippe
 
 ### Integration into your mod
 
-`git submodule add https://github.com/alphanin9/SharedPunk.git deps/sharedpunk`
+SharedPunk is packaged in [cp2077-xmake-repo](https://github.com/alphanin9/cp2077-xmake-repo):
 
-Add this to your `xmake.lua` file:
+```lua
+add_repositories("cp2077-repo https://github.com/alphanin9/cp2077-xmake-repo.git")
+add_requires("sharedpunk")
+
+target("your-cool-mod")
+    ...
+    add_packages("sharedpunk")
+```
+
+Or as a submodule, to build it from source alongside your mod:
+
+`git submodule add https://github.com/alphanin9/SharedPunk.git deps/sharedpunk`
 
 ```lua
 includes("deps/sharedpunk/xmake.lua")
@@ -17,6 +28,9 @@ target("your-cool-mod")
     ...
     add_deps("cp2077-shared-data", ...)
 ```
+
+Either way RED4ext.SDK, RedLib and SafetyHook come from xmake packages, so there is
+nothing to clone recursively.
 
 ### How to use
 
