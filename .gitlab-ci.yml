@@ -1,0 +1,24 @@
+# Mirrors .github/workflows/ci-build.yml.
+#
+# Runs on GitLab-hosted Windows runners (beta). They have no Docker executor, so
+# there is no `image:` and every script line is PowerShell. Windows runners bill at a
+# higher rate than Linux against the namespace's compute minutes.
+#
+# To use your own runner instead, swap the tag below for whatever you registered.
+
+stages:
+  - build
+
+build:
+  stage: build
+  tags:
+    - saas-windows-medium-amd64
+  before_script:
+    # The install script appends its install dir to $env:Path for this session.
+    - irm https://xmake.io/psget.text | iex
+    - xmake --version
+  script:
+    # -m ci builds with warnings as errors.
+    - xmake repo --update
+    - xmake config -m ci --yes
+    - xmake build
