@@ -117,7 +117,7 @@ struct Data
 {
     static constexpr auto AddArgumentInternal =
         util::RawFunc<detail::Hashes::SessionData_AddArgumentToList,
-                      void* (*)(Red::DynArray<Red::SharedPtr<Red::ISerializable>>&, Red::CName, Red::CBaseRTTIType*,
+                      void* (*)(Red::DynArray<Red::SharedPtr<Red::ISerializable>>&, Red::CName, Red::rtti::IType*,
                                 void*)>();
     static constexpr auto Dtor = util::RawFunc<detail::Hashes::SessionData_dtor, void* (*)(void*)>();
 
