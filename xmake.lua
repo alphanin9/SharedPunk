@@ -1,7 +1,9 @@
 set_languages("c++latest")
 
 -- RED4ext.SDK and RedLib are not in the official xmake-repo.
-add_repositories("cp2077-repo https://github.com/alphanin9/cp2077-xmake-repo.git")
+-- add_repositories takes a single url with no fallback; the GitHub mirror is at
+-- https://github.com/alphanin9/cp2077-xmake-repo
+add_repositories("cp2077-repo https://gitlab.com/alphanin9/cp2077-xmake-repo.git")
 
 add_requires("red4ext-sdk", "red-lib", "safetyhook")
 

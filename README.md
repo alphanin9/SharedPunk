@@ -9,7 +9,7 @@ Credits to [psiberx](https://github.com/psiberx), a lot of this library is rippe
 SharedPunk is packaged in [cp2077-xmake-repo](https://github.com/alphanin9/cp2077-xmake-repo):
 
 ```lua
-add_repositories("cp2077-repo https://github.com/alphanin9/cp2077-xmake-repo.git")
+add_repositories("cp2077-repo https://gitlab.com/alphanin9/cp2077-xmake-repo.git")
 add_requires("sharedpunk")
 
 target("your-cool-mod")
