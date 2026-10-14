@@ -118,6 +118,15 @@ void Ink::InkSystem::SetInitialLoadingScreenTDBID(TweakDBID aId) noexcept
 
     nodeDefinition->selectedLoading = aId;
 
+#ifdef __APPLE__
+    // The loading-screen node's Execute and the loading layer setter have no macOS entry yet. Without them the game
+    // shows its default loading screen; the session itself is unaffected.
+    if (!Quest::SetNextLoadingScreen::Execute.IsAvailable() ||
+        !Ink::LoadingScreen::SetUnknownVarInInitialLoadingScreen.IsAvailable())
+    {
+        return;
+    }
+#endif
     Quest::SetNextLoadingScreen::Execute(nodeDefinition);
     Ink::LoadingScreen::SetUnknownVarInInitialLoadingScreen(loadingLayer, 2u);
 }
@@ -137,5 +146,12 @@ Ink::SessionData::Data::Data() noexcept
 
 Ink::SessionData::Data::~Data() noexcept
 {
+#ifdef __APPLE__
+    // The game's SessionData destructor is inlined on macOS. Its callers release the argument array with 0x3f0e794
+    // (as the game does right after StartSession) and the CString member destructor handles the name.
+    using ReleaseArgumentsFn = void (*)(void*);
+    reinterpret_cast<ReleaseArgumentsFn>(ngplus_mac_image_base() + 0x3f0e794)(&m_arguments);
+#else
     Dtor(this);
+#endif
 }

@@ -1,6 +1,16 @@
 #pragma once
 #include <RED4ext/RED4ext.hpp>
 #include <cstdint>
+#ifdef __APPLE__
+extern "C" uintptr_t ngplus_mac_image_base();
+extern "C" bool ngplus_mac_address_is_real(uintptr_t aAddress);
+extern "C" void ngplus_mac_log_missing_hash(uint32_t aHash);
+
+namespace Red::rtti
+{
+using IType = RED4ext::CBaseRTTIType;
+}
+#endif
 
 // Borrowed from https://github.com/psiberx/cp2077-codeware/blob/main/lib/Core/Raw.hpp
 namespace shared::util
@@ -12,8 +22,12 @@ public:
 
     inline static uintptr_t GetImageBase()
     {
+#ifdef __APPLE__
+        return ngplus_mac_image_base();
+#else
         static const auto base = reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
         return base;
+#endif
     }
 };
 
@@ -35,7 +49,11 @@ public:
 
     operator bool() const noexcept
     {
+#ifdef __APPLE__
+        return IsAvailable();
+#else
         return GetPtr() != nullptr;
+#endif
     }
 
     [[nodiscard]] inline operator Callable() const
@@ -50,11 +68,23 @@ public:
 
     [[nodiscard]] inline Callable GetPtr() const noexcept
     {
+#ifdef __APPLE__
+        if (!IsAvailable())
+        {
+            return &UnavailableStub;
+        }
+#endif
         return reinterpret_cast<Callable>(GetAddress());
     }
 
     [[nodiscard]] inline Callable GetOriginalPtr() const noexcept
     {
+#ifdef __APPLE__
+        if (!ngplus_mac_address_is_real(GetOriginalAddress()))
+        {
+            return &UnavailableStub;
+        }
+#endif
         return reinterpret_cast<Callable>(GetOriginalAddress());
     }
 
@@ -103,18 +133,56 @@ public:
 
         address = aAddress;
     }
+#ifdef __APPLE__
+    [[nodiscard]] static bool IsAvailable() noexcept
+    {
+        return ngplus_mac_address_is_real(GetAddress());
+    }
+#endif
 
     inline static auto Invoke(Args... aArgs)
     {
+#ifdef __APPLE__
+        if (!IsAvailable())
+        {
+            return UnavailableStub(std::forward<Args>(aArgs)...);
+        }
+#endif
         return reinterpret_cast<Callable>(GetAddress())(std::forward<Args>(aArgs)...);
     }
 
     inline static auto InvokeOriginal(Args... aArgs)
     {
+#ifdef __APPLE__
+        if (!ngplus_mac_address_is_real(GetOriginalAddress()))
+        {
+            return UnavailableStub(std::forward<Args>(aArgs)...);
+        }
+#endif
         return reinterpret_cast<Callable>(GetOriginalAddress())(std::forward<Args>(aArgs)...);
     }
 
 private:
+#ifdef __APPLE__
+    static R UnavailableStub(Args... aArgs)
+    {
+        ((void)aArgs, ...);
+        ngplus_mac_log_missing_hash(static_cast<uint32_t>(target));
+        if constexpr (std::is_void_v<R>)
+        {
+            return;
+        }
+        else if constexpr (std::is_lvalue_reference_v<R>)
+        {
+            static std::remove_cvref_t<R> standin{};
+            return standin;
+        }
+        else
+        {
+            return R{};
+        }
+    }
+#endif
     inline static uintptr_t address = 0;
     inline static uintptr_t original = 0;
 };
@@ -146,7 +214,11 @@ public:
     auto operator()(C* aContext, Args... aArgs) const
     {
         auto vft = *reinterpret_cast<uintptr_t*>(aContext);
+#ifdef __APPLE__
+        auto callable = *reinterpret_cast<Callable*>(vft + offset + 8);
+#else
         auto callable = *reinterpret_cast<Callable*>(vft + offset);
+#endif
         return callable(aContext, std::forward<Args>(aArgs)...);
     }
 };
@@ -172,7 +244,11 @@ public:
 
     operator bool() const noexcept
     {
+#ifdef __APPLE__
+        return IsAvailable();
+#else
         return GetPtr() != nullptr;
+#endif
     }
 
     [[nodiscard]] inline operator Type&() const
@@ -239,14 +315,45 @@ public:
         if constexpr (sizeof(target) == sizeof(uintptr_t))
         {
             static uintptr_t addr = target ? target + GetImageBase() : 0;
+#ifdef __APPLE__
+            if (!ngplus_mac_address_is_real(addr))
+            {
+                ngplus_mac_log_missing_hash(static_cast<uint32_t>(target));
+                static T standin{};
+                return reinterpret_cast<uintptr_t>(&standin);
+            }
+#endif
             return addr;
         }
         else
         {
             static uintptr_t addr = RED4ext::UniversalRelocBase::Resolve(target);
+#ifdef __APPLE__
+            if (!ngplus_mac_address_is_real(addr))
+            {
+                ngplus_mac_log_missing_hash(static_cast<uint32_t>(target));
+                static T standin{};
+                return reinterpret_cast<uintptr_t>(&standin);
+            }
+#endif
             return addr;
         }
     }
+#ifdef __APPLE__
+    [[nodiscard]] static bool IsAvailable() noexcept
+    {
+        if constexpr (sizeof(target) == sizeof(uintptr_t))
+        {
+            static uintptr_t addr = target ? target + GetImageBase() : 0;
+            return ngplus_mac_address_is_real(addr);
+        }
+        else
+        {
+            static uintptr_t addr = RED4ext::UniversalRelocBase::Resolve(target);
+            return ngplus_mac_address_is_real(addr);
+        }
+    }
+#endif
 
     inline static T* Get()
     {

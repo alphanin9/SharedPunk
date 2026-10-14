@@ -5,6 +5,51 @@ using namespace Red;
 using namespace shared::raw;
 
 #pragma region Node accessor
+#ifdef __APPLE__
+#include <cstdint>
+
+// macOS has no NodeAccessor functions: the game inlines them at every caller. The same steps run here on the
+// stream's virtuals, one slot later than on Windows because the Itanium vtable has two destructor slots:
+// +0x98 is the Windows +0x90 check, +0x78 opens the node (Windows +0x70), +0x80 closes it (Windows +0x78).
+// Checked against the inlined copy in the game's character customization save code.
+namespace
+{
+using StreamCheckFn = bool (*)(BaseStream*);
+using StreamOpenNodeFn = bool (*)(BaseStream*, Red::CName, bool);
+using StreamCloseNodeFn = void (*)(BaseStream*);
+
+template<typename TFn>
+TFn StreamSlot(BaseStream* aStream, std::uintptr_t aOffset) noexcept
+{
+    auto vtable = *reinterpret_cast<std::uintptr_t*>(aStream);
+    return *reinterpret_cast<TFn*>(vtable + aOffset);
+}
+} // namespace
+
+Save::NodeAccessor::NodeAccessor(BaseStream* aStream, Red::CName aNodeName, bool aUnk1, bool aIsOptional) noexcept
+    : m_stream(aStream)
+    , m_nodeIsPresentInSave(false)
+    , unk09(aUnk1)
+{
+    if (StreamSlot<StreamCheckFn>(aStream, 0x98)(aStream) && !aIsOptional)
+    {
+        m_nodeIsPresentInSave = StreamSlot<StreamOpenNodeFn>(aStream, 0x78)(aStream, aNodeName, aUnk1);
+    }
+}
+
+Save::NodeAccessor::~NodeAccessor() noexcept
+{
+    if (StreamSlot<StreamCheckFn>(m_stream, 0x98)(m_stream) && m_nodeIsPresentInSave)
+    {
+        StreamSlot<StreamCloseNodeFn>(m_stream, 0x80)(m_stream);
+    }
+}
+
+bool Save::NodeAccessor::IsGood() noexcept
+{
+    return unk09 ? StreamSlot<StreamCheckFn>(m_stream, 0x98)(m_stream) : m_nodeIsPresentInSave;
+}
+#else
 Save::NodeAccessor::NodeAccessor(BaseStream* aStream, Red::CName aNodeName, bool aUnk1, bool aIsOptional) noexcept
     : m_stream(nullptr)
     , m_nodeIsPresentInSave(false)
@@ -22,6 +67,7 @@ bool Save::NodeAccessor::IsGood() noexcept
 {
     return IsGoodNode(this);
 }
+#endif
 #pragma endregion
 
 #pragma region Load stream
