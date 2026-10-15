@@ -1,6 +1,6 @@
 #include <Shared/Raw/FileSystem/FileSystem.hpp>
 #ifdef __APPLE__
-#include "MacFileAbi.hpp"
+#include <Impl/Mac/FileAbi.hpp>
 #endif
 
 using namespace Red;
@@ -103,7 +103,7 @@ RedFileManager* RedFileManager::GetInstance() noexcept
 DynArray<CString> RedFileManager::FindFilesByName(const CString& aRootPath, const StringView& aFileName) noexcept
 {
 #ifdef __APPLE__
-    return ngp::mac::FindFiles(this, aRootPath, aFileName, true);
+    return shared::mac::FindFiles(this, aRootPath, aFileName, true);
 #else
     DynArray<CString> ret{};
 
@@ -116,7 +116,7 @@ DynArray<CString> RedFileManager::FindFilesByName(const CString& aRootPath, cons
 RedFileStream RedFileManager::OpenFileStream(const CString& aPath) noexcept
 {
 #ifdef __APPLE__
-    return RedFileStream(ngp::mac::OpenFileStream(aPath, 0));
+    return RedFileStream(shared::mac::OpenFileStream(aPath, 0));
 #else
     RedFileStream ret{};
     OpenFileStreamInternal(this, &ret, aPath, 0);
@@ -128,7 +128,7 @@ RedFileStream RedFileManager::OpenFileStream(const CString& aPath) noexcept
 BufferedRedFileStream RedFileManager::OpenBufferedFileStream(const CString& aPath) noexcept
 {
 #ifdef __APPLE__
-    return BufferedRedFileStream(ngp::mac::OpenFileStream(aPath, 1));
+    return BufferedRedFileStream(shared::mac::OpenFileStream(aPath, 1));
 #else
     BufferedRedFileStream ret{};
     OpenFileStreamInternal(this, &ret, aPath, 1);

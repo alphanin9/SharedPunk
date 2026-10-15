@@ -2,9 +2,11 @@
 #include <RED4ext/RED4ext.hpp>
 #include <cstdint>
 #ifdef __APPLE__
-extern "C" uintptr_t ngplus_mac_image_base();
-extern "C" bool ngplus_mac_address_is_real(uintptr_t aAddress);
-extern "C" void ngplus_mac_log_missing_hash(uint32_t aHash);
+// Provided by the mod that links SharedPunk on macOS: the game image base, the check for an address that resolved to a
+// real function, and the log line for a hash with no address.
+extern "C" uintptr_t sharedpunk_mac_image_base();
+extern "C" bool sharedpunk_mac_address_is_real(uintptr_t aAddress);
+extern "C" void sharedpunk_mac_log_missing_hash(uint32_t aHash);
 
 namespace Red::rtti
 {
@@ -23,7 +25,7 @@ public:
     inline static uintptr_t GetImageBase()
     {
 #ifdef __APPLE__
-        return ngplus_mac_image_base();
+        return sharedpunk_mac_image_base();
 #else
         static const auto base = reinterpret_cast<uintptr_t>(GetModuleHandleW(nullptr));
         return base;
@@ -80,7 +82,7 @@ public:
     [[nodiscard]] inline Callable GetOriginalPtr() const noexcept
     {
 #ifdef __APPLE__
-        if (!ngplus_mac_address_is_real(GetOriginalAddress()))
+        if (!sharedpunk_mac_address_is_real(GetOriginalAddress()))
         {
             return &UnavailableStub;
         }
@@ -136,7 +138,7 @@ public:
 #ifdef __APPLE__
     [[nodiscard]] static bool IsAvailable() noexcept
     {
-        return ngplus_mac_address_is_real(GetAddress());
+        return sharedpunk_mac_address_is_real(GetAddress());
     }
 #endif
 
@@ -154,7 +156,7 @@ public:
     inline static auto InvokeOriginal(Args... aArgs)
     {
 #ifdef __APPLE__
-        if (!ngplus_mac_address_is_real(GetOriginalAddress()))
+        if (!sharedpunk_mac_address_is_real(GetOriginalAddress()))
         {
             return UnavailableStub(std::forward<Args>(aArgs)...);
         }
@@ -167,7 +169,7 @@ private:
     static R UnavailableStub(Args... aArgs)
     {
         ((void)aArgs, ...);
-        ngplus_mac_log_missing_hash(static_cast<uint32_t>(target));
+        sharedpunk_mac_log_missing_hash(static_cast<uint32_t>(target));
         if constexpr (std::is_void_v<R>)
         {
             return;
@@ -316,9 +318,9 @@ public:
         {
             static uintptr_t addr = target ? target + GetImageBase() : 0;
 #ifdef __APPLE__
-            if (!ngplus_mac_address_is_real(addr))
+            if (!sharedpunk_mac_address_is_real(addr))
             {
-                ngplus_mac_log_missing_hash(static_cast<uint32_t>(target));
+                sharedpunk_mac_log_missing_hash(static_cast<uint32_t>(target));
                 static T standin{};
                 return reinterpret_cast<uintptr_t>(&standin);
             }
@@ -329,9 +331,9 @@ public:
         {
             static uintptr_t addr = RED4ext::UniversalRelocBase::Resolve(target);
 #ifdef __APPLE__
-            if (!ngplus_mac_address_is_real(addr))
+            if (!sharedpunk_mac_address_is_real(addr))
             {
-                ngplus_mac_log_missing_hash(static_cast<uint32_t>(target));
+                sharedpunk_mac_log_missing_hash(static_cast<uint32_t>(target));
                 static T standin{};
                 return reinterpret_cast<uintptr_t>(&standin);
             }
@@ -345,12 +347,12 @@ public:
         if constexpr (sizeof(target) == sizeof(uintptr_t))
         {
             static uintptr_t addr = target ? target + GetImageBase() : 0;
-            return ngplus_mac_address_is_real(addr);
+            return sharedpunk_mac_address_is_real(addr);
         }
         else
         {
             static uintptr_t addr = RED4ext::UniversalRelocBase::Resolve(target);
-            return ngplus_mac_address_is_real(addr);
+            return sharedpunk_mac_address_is_real(addr);
         }
     }
 #endif

@@ -45,7 +45,7 @@ struct HookResult
         if (!success)
         {
 #ifdef __APPLE__
-            std::fprintf(stderr, "[ngplus] hook OrDie skipped: %s\n", aMessage ? aMessage : "hook failed");
+            std::fprintf(stderr, "[sharedpunk] hook OrDie skipped: %s\n", aMessage ? aMessage : "hook failed");
             return;
 #else
             if (aMessage)

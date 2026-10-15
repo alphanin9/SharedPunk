@@ -150,7 +150,7 @@ Ink::SessionData::Data::~Data() noexcept
     // The game's SessionData destructor is inlined on macOS. Its callers release the argument array with 0x3f0e794
     // (as the game does right after StartSession) and the CString member destructor handles the name.
     using ReleaseArgumentsFn = void (*)(void*);
-    reinterpret_cast<ReleaseArgumentsFn>(ngplus_mac_image_base() + 0x3f0e794)(&m_arguments);
+    reinterpret_cast<ReleaseArgumentsFn>(sharedpunk_mac_image_base() + 0x3f0e794)(&m_arguments);
 #else
     Dtor(this);
 #endif

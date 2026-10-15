@@ -1,8 +1,9 @@
 #include <Impl/Hooks/Driver/HookingDriver.hpp>
 
 #ifdef __APPLE__
-extern "C" bool ngplus_mac_attach(uintptr_t aAddr, void* aDetour, void** aOriginal);
-extern "C" bool ngplus_mac_detach(uintptr_t aAddr);
+// Provided by the mod that links SharedPunk on macOS: it installs and removes hooks through its loader's hooking API.
+extern "C" bool sharedpunk_mac_attach(uintptr_t aAddr, void* aDetour, void** aOriginal);
+extern "C" bool sharedpunk_mac_detach(uintptr_t aAddr);
 
 shared::hook::HookingDriver& shared::hook::HookingDriver::Get() noexcept
 {
@@ -26,7 +27,7 @@ bool shared::hook::HookingDriver::Attach(uintptr_t aAddr, void* aDetour, void** 
     }
 
     void* unused = nullptr;
-    const bool ok = ngplus_mac_attach(aAddr, aDetour, aOriginalFn ? aOriginalFn : &unused);
+    const bool ok = sharedpunk_mac_attach(aAddr, aDetour, aOriginalFn ? aOriginalFn : &unused);
     m_installed.insert_or_assign(aAddr, ok);
     return ok;
 }
@@ -40,7 +41,7 @@ bool shared::hook::HookingDriver::Detach(uintptr_t aAddr) noexcept
         return false;
     }
 
-    const bool ok = ngplus_mac_detach(aAddr);
+    const bool ok = sharedpunk_mac_detach(aAddr);
     if (ok)
     {
         it->second = false;
