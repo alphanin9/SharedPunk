@@ -1,3 +1,21 @@
+#ifdef __APPLE__
+// clang needs the types Handle<T> destroys to be complete here (MSVC defers the check).
+#include <RED4ext/Scripting/Natives/Generated/ent/ISourceBinding.hpp>
+#include <RED4ext/Scripting/Natives/Generated/ent/ITransformBinding.hpp>
+#include <RED4ext/Scripting/Natives/Generated/ink/ControllerProcessor.hpp>
+#include <RED4ext/Scripting/Natives/Generated/ink/VirtualWindow.hpp>
+#include <RED4ext/Scripting/Natives/Generated/ink/WidgetLibraryItemInstance.hpp>
+#include <RED4ext/Scripting/Natives/Generated/ink/anim/Processor.hpp>
+#include <RED4ext/Scripting/Natives/Generated/ink/IEffect.hpp>
+#include <RED4ext/Scripting/Natives/Generated/ink/MultiChildren.hpp>
+#include <RED4ext/Scripting/Natives/Generated/ink/PropertyManager.hpp>
+#include <RED4ext/Scripting/Natives/Generated/ink/UserData.hpp>
+#include <RED4ext/Scripting/Natives/Generated/ink/IWidgetController.hpp>
+#include <RED4ext/Scripting/Natives/Generated/ink/SpawningProcessor.hpp>
+#include <RED4ext/Scripting/Natives/Generated/ink/StyleResourceWrapper.hpp>
+#include <RED4ext/Scripting/Natives/Generated/ink/WidgetLogicController.hpp>
+#include <RED4ext/Scripting/Natives/Generated/ink/WidgetLibraryResource.hpp>
+#endif
 #include <Shared/Raw/Ink/InkSystem.hpp>
 #include <Shared/Raw/Quest/NodeFuncs.hpp>
 
@@ -118,6 +136,15 @@ void Ink::InkSystem::SetInitialLoadingScreenTDBID(TweakDBID aId) noexcept
 
     nodeDefinition->selectedLoading = aId;
 
+#ifdef __APPLE__
+    // The loading-screen node's Execute and the loading layer setter have no macOS entry yet. Without them the game
+    // shows its default loading screen; the session itself is unaffected.
+    if (!Quest::SetNextLoadingScreen::Execute.IsAvailable() ||
+        !Ink::LoadingScreen::SetUnknownVarInInitialLoadingScreen.IsAvailable())
+    {
+        return;
+    }
+#endif
     Quest::SetNextLoadingScreen::Execute(nodeDefinition);
     Ink::LoadingScreen::SetUnknownVarInInitialLoadingScreen(loadingLayer, 2u);
 }
@@ -137,5 +164,12 @@ Ink::SessionData::Data::Data() noexcept
 
 Ink::SessionData::Data::~Data() noexcept
 {
+#ifdef __APPLE__
+    // The game's SessionData destructor is inlined on macOS. Its callers release the argument array with 0x3f0e794
+    // (as the game does right after StartSession) and the CString member destructor handles the name.
+    using ReleaseArgumentsFn = void (*)(void*);
+    reinterpret_cast<ReleaseArgumentsFn>(sharedpunk_mac_image_base() + 0x3f0e794)(&m_arguments);
+#else
     Dtor(this);
+#endif
 }

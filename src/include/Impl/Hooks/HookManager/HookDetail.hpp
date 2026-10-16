@@ -2,6 +2,9 @@
 
 #include <Shared/Raw/Assert/AssertionFailed.hpp>
 #include <Impl/Hooks/Driver/HookingDriver.hpp>
+#ifdef __APPLE__
+#include <cstdio>
+#endif
 
 namespace shared::hook
 {
@@ -41,6 +44,10 @@ struct HookResult
     {
         if (!success)
         {
+#ifdef __APPLE__
+            std::fprintf(stderr, "[sharedpunk] hook OrDie skipped: %s\n", aMessage ? aMessage : "hook failed");
+            return;
+#else
             if (aMessage)
             {
                 shared::raw::Assert::RaiseAssert(std::source_location::current(), aMessage);
@@ -56,6 +63,7 @@ struct HookResult
                     raw::Assert::RaiseAssert(std::source_location::current(), "Failed to hook address id {}.", TOffset);
                 }
             }
+#endif
         }
     }
 
