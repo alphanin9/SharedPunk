@@ -65,6 +65,7 @@ inline static auto HookWrapOnce(TCallback&& aCallback)
     return HookWrap<TTarget, TCallback, HookRun::Once>(std::forward<TCallback>(aCallback));
 }
 
+#ifndef __APPLE__
 template<typename TTarget, typename TCallback, HookFlow TFlow = HookFlow::Original, HookRun TRun = HookRun::Default>
     requires Detail::HookFlowTraits<TFlow, TTarget, TCallback>::IsCompatibleMember
 inline auto Hook(const TCallback& aCallback, typename TTarget::Callable* aOriginal = nullptr)
@@ -121,6 +122,7 @@ inline auto HookWrapOnce(const TCallback& aCallback)
 {
     return HookWrap<TTarget, TCallback, HookRun::Once>(aCallback);
 }
+#endif
 
 template<typename TTarget>
 inline static auto Unhook()
