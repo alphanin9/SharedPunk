@@ -2,6 +2,7 @@
 #include <RED4ext/RED4ext.hpp>
 #include <RedLib.hpp>
 
+#include <RED4ext/JobQueue.hpp>
 #include <RED4ext/Scripting/Natives/Generated/quest/NodeDefinition.hpp>
 #include <RED4ext/Scripting/Natives/Generated/quest/PhaseInstance.hpp>
 #include <RED4ext/Scripting/Natives/Generated/quest/QuestsSystem.hpp>
@@ -65,6 +66,10 @@ namespace QuestsSystem
 // Sig: 48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 48 83 EC ? 33 ED B8
 constexpr auto AddQuest =
     util::RawFunc<detail::Hashes::QuestsSystem_AddQuest, void (*)(Red::quest::QuestsSystem*, Red::ResourcePath)>();
+
+constexpr auto LoadQuestResources =
+    util::RawFunc<detail::Hashes::QuestsSystem_LoadQuestResources,
+                  void (*)(Red::quest::QuestsSystem*, Red::JobQueue&, bool&)>();
 
 using QuestMutex = util::OffsetPtr<0x60, Red::SharedSpinLock>;
 using RootPhase = util::OffsetPtr<0x68, Red::Handle<Red::quest::PhaseInstance>>;

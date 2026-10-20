@@ -85,6 +85,7 @@ constexpr auto Quest_FactsDBManagerNodeDefinition_ExecuteNode = 3679006322u;
 
 constexpr auto QuestsSystem_AddQuest = 1617892594u;
 constexpr auto QuestsSystem_CreateContext = 3144298192u;
+constexpr auto QuestsSystem_LoadQuestResources = 407969320u;
 constexpr auto QuestPhaseInstance_ExecuteNode = 3227858325u;
 #pragma endregion
 
