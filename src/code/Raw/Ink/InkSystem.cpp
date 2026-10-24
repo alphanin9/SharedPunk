@@ -165,10 +165,11 @@ Ink::SessionData::Data::Data() noexcept
 Ink::SessionData::Data::~Data() noexcept
 {
 #ifdef __APPLE__
-    // The game's SessionData destructor is inlined on macOS. Its callers release the argument array with 0x3f0e794
-    // (as the game does right after StartSession) and the CString member destructor handles the name.
+    // The game's SessionData destructor is inlined on macOS. Its callers release the argument array with 0x1579160
+    // (as the game does right after StartSession) and the CString member destructor handles the name. 0x1579160 is the
+    // 2.5.0 thunk to the release function (2.3.1: 0x3f0e794).
     using ReleaseArgumentsFn = void (*)(void*);
-    reinterpret_cast<ReleaseArgumentsFn>(sharedpunk_mac_image_base() + 0x3f0e794)(&m_arguments);
+    reinterpret_cast<ReleaseArgumentsFn>(sharedpunk_mac_image_base() + 0x1579160)(&m_arguments);
 #else
     Dtor(this);
 #endif
