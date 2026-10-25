@@ -142,7 +142,7 @@ struct Data
 
 namespace SystemRequestsHandler
 {
-using InputDeviceId = util::OffsetPtr<0x630, std::uint64_t>;
+using InputDeviceId = util::OffsetPtr<0x6C8, std::uint64_t>; // 2.5: SystemRequestsHandler grew, the member moved from +0x630
 constexpr auto IsPreGame = util::RawVFunc<0x178, bool (*)(Red::ink::ISystemRequestsHandler*)>();
 
 constexpr auto StartSession = util::RawFunc<detail::Hashes::InkSystemRequestsHandler_StartSession,
